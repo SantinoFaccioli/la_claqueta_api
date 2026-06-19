@@ -39,4 +39,28 @@
             return $res->json($peliculas, 200);
         }
 
+        public function actualizarPelicula($req, $res) {
+            $id = $req->params->id;
+
+            
+            $pelicula = $this->model->traerPelicula($id);
+            if (!$pelicula) {
+                return $res->json("La pelicula con el id=$id no existe", 404);
+            }
+ 
+            if (empty($req->body->titulo) || empty($req->body->director) || empty($req->body->estreno) || empty($req->body->imagen) || empty($req->body->resenia) || empty($req->body->id_categoria)) {
+                 return $res->json("Faltan completar campos obligatorios", 400);
+            }
+            $titulo       = $req->body->titulo;
+            $director     = $req->body->director;
+            $estreno      = $req->body->estreno;
+            $imagen       = $req->body->imagen;
+            $resenia      = $req->body->resenia; 
+            $id_categoria = $req->body->id_categoria;
+
+            $this->model->actualizarPeliculaInDB($id, $titulo, $director, $estreno, $imagen, $resenia, $id_categoria);
+
+            return $res->json("Pelicula id=$id actualizada con exito", 200);
+        }
+
     }

@@ -9,7 +9,7 @@
         // --- todo esto se borra antes de entregar XD
 
 /* MIEMBRO A */
-// GET /api/peliculas -> Trae toda la colección aplicando ordenamiento [cite: 20, 21, 63]
+//Trae toda la colección aplicando ordenamiento
 $router->addRoute('peliculas', 'GET',  'ApiPeliculasController', 'getPeliculas');
 
 /* MIEMBRO A */

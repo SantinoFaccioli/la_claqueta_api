@@ -35,5 +35,19 @@
             }
         }
 
+        public function actualizarPeliculaInDB($id, $titulo, $director, $estreno, $imagen, $resenia, $id_categoria) {
+            $query = $this->db->prepare('UPDATE pelicula 
+                                        SET titulo = ?, director = ?, estreno = ?, imagen = ?, resenia = ?, id_categoria = ? 
+                                        WHERE id_pelicula = ?');
+            
+            $query->execute([$titulo, $director, $estreno, $imagen, $resenia, $id_categoria, $id]);
+        }
+
+        
+        // necesito que el de traer pelicula por id se llame asi pq se me rompen cosas :D
+        public function traerPelicula($id) {
+            
+        }
+
     }
     
