@@ -43,10 +43,20 @@
             $query->execute([$titulo, $director, $estreno, $imagen, $resenia, $id_categoria, $id]);
         }
 
-        
-        // necesito que el de traer pelicula por id se llame asi pq se me rompen cosas :D
         public function traerPelicula($id) {
+            $query = $this->db->prepare('SELECT p.*, c.nombre AS nombre_categoria 
+                                         FROM pelicula p 
+                                         INNER JOIN categoria c ON p.id_categoria = c.id_categoria 
+                                         WHERE p.id_pelicula = ?');
+            $query->execute([$id]);
+            return $query->fetch(PDO::FETCH_OBJ); 
+        }
+        public function insertarPeliculaInDB($titulo, $director, $estreno, $imagen, $resenia, $id_categoria) {
+            $query = $this->db->prepare('INSERT INTO pelicula (titulo, director, estreno, imagen, resenia, id_categoria) 
+                                         VALUES (?, ?, ?, ?, ?, ?)');
+            $query->execute([$titulo, $director, $estreno, $imagen, $resenia, $id_categoria]);
             
+            return $this->db->lastInsertId();
         }
 
     }
