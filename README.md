@@ -1,6 +1,6 @@
 # TP API REST - La Claqueta
 
-Este es el repositorio para la parte de la API REST de La Claqueta, usando arquitectura MVC y ruteo dinámico con la librería que nos dieron en la materia (pasando los datos en limpio por JSON).
+Este es el repositorio para la parte de la API REST de La Claqueta, usando arquitectura MVC y ruteo dinámico con la librería dada en la materia, procesando y transfiriendo los datos limpios en formato JSON.
 
 ## Tabla de Ruteo (Endpoints)
 
@@ -14,25 +14,40 @@ Este es el repositorio para la parte de la API REST de La Claqueta, usando arqui
 
 ---
 
-##Qué hace cada Endpoint y cómo probarlo
+## Qué hace cada Endpoint y cómo probarlo
 
 ### 1. Listado completo con ordenamiento (Miembro A)
 * **URL:** `GET /api/peliculas`
-* **Cómo probarlo:** Si lo tirás limpio en Postman, trae todo por defecto (ordenado por ID). Podés meterle parámetros en la URL para ordenar por cualquier columna de la tabla (ej: `?sortBy=estreno&order=desc` o `?sortBy=titulo&order=asc`).
-* **Errores:** Si mandás un campo que no existe en la base de datos, te rebota con un código `400 Bad Request` por seguridad.
+* **Cómo probarlo:** Si se ejecuta limpio en Postman, trae la colección completa por defecto (ordenada por ID de forma ascendente). Permite inyectar parámetros en la URL (Query Parameters) para ordenar por cualquier columna existente de la tabla.
+* **Ejemplo de uso:** `http://localhost/la_claqueta_api/api/peliculas?sortBy=estreno&order=desc` o `?sortBy=titulo&order=asc`.
+* **Errores:** Si se envía un campo de ordenamiento que no existe en la base de datos, el sistema retorna un código `400 Bad Request` por seguridad.
 
 ### 2. Modificación completa - PUT (Miembro A)
 * **URL:** `PUT /api/peliculas/:id`
-* **Cómo probarlo:** Tenés que pasarle el ID en la URL (ej: `/api/peliculas/1`) y en el **Body** de Postman elegir la opción **raw -> JSON** y mandarle el objeto entero con los cambios.
-* **Errores:** * Si te falta algún campo obligatorio en el JSON, te devuelve un `400 Bad Request`.
-  * Si ponés un ID que no existe, te tira un `404 Not Found`.
+* **Cómo probarlo:** Se debe pasar el ID del recurso directamente en la URL (ej: `/api/peliculas/1`). En la pestaña **Body** de Postman, seleccionar la opción **raw -> JSON** y enviar el objeto completo modificado.
+* **Errores:** * Si falta algún campo obligatorio en la estructura JSON, devuelve un `400 Bad Request`.
+  * Si se ingresa un ID que no corresponde a ninguna película en el sistema, retorna un `404 Not Found`.
+
+---
 
 ### 3. Traer una película por ID (Miembro B)
 * **URL:** `GET /api/peliculas/:id`
-* **Cómo probarlo:** Ponés el ID al final de la URL (ej: `/api/peliculas/2`) y te trae ese único registro en JSON.
-* **Errores:** Si la película no existe en la base de datos, corta la ejecución y te salta un `404 Not Found`.
+* **Descripción:** Recupera los detalles completos de una película específica según su identificador único.
 
-### 4. Alta de registros - POST (Miembro B)
-* **URL:** `POST /api/peliculas`
-* **Cómo probarlo:** Vas a la pestaña **Body -> raw -> JSON** en Postman y mandás los datos de la nueva película (sin pasarle el ID, porque es autoincremental).
-* **Respuestas:** Si sale todo bien, te devuelve la película recién creada completa y un código `201 Created`. Si mandás campos vacíos, te tira un `400 Bad Request`.
+#### Cómo probarlo en Postman:
+1. Seleccioná el método **GET**.
+2. Ingresá la URL especificando un ID existente (ejemplo: `http://localhost/la_claqueta_api/api/peliculas/2`).
+3. Presioná **Send**.
+
+#### Ejemplo de Respuesta Exitosa (200 OK):
+```json
+{
+  "id_pelicula": 2,
+  "titulo": "Interstellar",
+  "director": "Christopher Nolan",
+  "estreno": "2014",
+  "imagen": "[https://images.unsplash.com/photo-1462331940025-496dfbfc7564](https://images.unsplash.com/photo-1462331940025-496dfbfc7564)",
+  "resenia": "Un grupo de científicos y exploradores se embarcan en una misión espacial desesperada...",
+  "id_categoria": 2,
+  "nombre_categoria": "Ciencia Ficción"
+}
